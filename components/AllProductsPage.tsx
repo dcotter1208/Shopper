@@ -1,21 +1,34 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { StyleSheet, View, Text, Image, Animated, Dimensions } from 'react-native';
 import { products } from '../mockData';
-import { Product } from './types/productTypes';
+import { Product } from '../types/productTypes';
 
 type AllProductsPageProps = {
 	searchText: string;
 };
 
 const AllProductsPage: React.FC<AllProductsPageProps> = ({ searchText }) => {
-	// Filter the product list based on the search criteria (name or brand)
+	const numColumns = 2;
+	const itemMargin = 8;
+	const itemWidth = (Dimensions.get('window').width - (numColumns + 1) * itemMargin) / numColumns;
+	const fadeAnim = useRef(new Animated.Value(0)).current;
+
 	const filteredProducts = products.filter(
 		(product) =>
 			product.name.toLowerCase().includes(searchText.toLowerCase()) || product.brand.toLowerCase().includes(searchText.toLowerCase())
 	);
 
+	// Animate the opacity of the product list whenever the search results change
+	useEffect(() => {
+		Animated.timing(fadeAnim, {
+			toValue: 1, // Fade to fully opaque
+			duration: 300,
+			useNativeDriver: true, // Use the native driver for performance
+		}).start();
+	}, [filteredProducts, fadeAnim]);
+
 	const renderItem = ({ item }: { item: Product }) => (
-		<View style={styles.itemContainer}>
+		<View style={[styles.itemContainer, { width: itemWidth }]}>
 			<Image style={styles.image} source={{ uri: item.image }} />
 			<Text style={styles.itemName}>{item.name}</Text>
 			<Text style={styles.itemPrice}>${item.price}</Text>
@@ -23,23 +36,24 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ searchText }) => {
 	);
 
 	return (
-		<FlatList
+		<Animated.FlatList
 			data={filteredProducts} // Use the filtered product list
 			renderItem={renderItem}
 			keyExtractor={(item) => item.id.toString()}
-			numColumns={2}
+			numColumns={numColumns}
 			contentContainerStyle={styles.listContainer}
+			style={{ opacity: fadeAnim }} // Bind opacity to animated value
 		/>
 	);
 };
 
 const styles = StyleSheet.create({
 	listContainer: {
-		padding: 8,
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		paddingHorizontal: 16,
 	},
 	itemContainer: {
-		flex: 1,
-		margin: 8,
 		backgroundColor: 'white',
 		borderRadius: 8,
 		padding: 16,
@@ -55,7 +69,7 @@ const styles = StyleSheet.create({
 	},
 	itemPrice: {
 		fontSize: 16,
-		fontWeight: 600,
+		fontWeight: '600',
 		marginTop: 8,
 	},
 });

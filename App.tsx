@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 import AllProductsPage from './components/AllProductsPage';
 import SearchBar from './components/SearchBar';
+import Toolbar from './components/Toolbar';
 
 export default function App() {
 	const [searchText, setSearchText] = useState('');
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<SearchBar onSearch={setSearchText} />
+			<Toolbar onSearch={setSearchText} />
 			<AllProductsPage searchText={searchText} />
 		</SafeAreaView>
 	);

@@ -1,4 +1,4 @@
-import { Brand, Product } from './components/types/productTypes';
+import { Brand, Product } from './types/productTypes';
 
 export const products: Product[] = [
 	{
@@ -189,12 +189,5 @@ export const products: Product[] = [
 		image: 'https://via.placeholder.com/150',
 		price: 230,
 		brand: Brand.Nike,
-	},
-	{
-		id: 28,
-		name: 'Adidas Supa Boost 700',
-		image: 'https://via.placeholder.com/150',
-		price: 250,
-		brand: Brand.Adidas,
 	},
 ];
