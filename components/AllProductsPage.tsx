@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { StyleSheet, View, Text, Image, FlatList, Animated } from 'react-native';
 import { products } from '../mockData';
 import { Product } from '../types/productTypes';
 
@@ -8,11 +8,21 @@ type AllProductsPageProps = {
 };
 
 const AllProductsPage: React.FC<AllProductsPageProps> = ({ searchText }) => {
-	// Filter the product list based on the search criteria (name or brand)
+	const fadeAnim = useRef(new Animated.Value(0)).current;
+
 	const filteredProducts = products.filter(
 		(product) =>
 			product.name.toLowerCase().includes(searchText.toLowerCase()) || product.brand.toLowerCase().includes(searchText.toLowerCase())
 	);
+
+	// Animate the opacity of the product list whenever the search results change
+	useEffect(() => {
+		Animated.timing(fadeAnim, {
+			toValue: 1, // Fade to fully opaque
+			duration: 300,
+			useNativeDriver: true, // Use the native driver for performance
+		}).start();
+	}, [filteredProducts, fadeAnim]);
 
 	const renderItem = ({ item }: { item: Product }) => (
 		<View style={styles.itemContainer}>
@@ -23,12 +33,13 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ searchText }) => {
 	);
 
 	return (
-		<FlatList
+		<Animated.FlatList
 			data={filteredProducts} // Use the filtered product list
 			renderItem={renderItem}
 			keyExtractor={(item) => item.id.toString()}
 			numColumns={2}
 			contentContainerStyle={styles.listContainer}
+			style={{ opacity: fadeAnim }} // Bind opacity to animated value
 		/>
 	);
 };

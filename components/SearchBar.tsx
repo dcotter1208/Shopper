@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	searchIcon: {
-		marginRight: 8, // Add some margin to the right of the icon
+		marginRight: 8,
 	},
 	searchBar: {
 		height: 40,
