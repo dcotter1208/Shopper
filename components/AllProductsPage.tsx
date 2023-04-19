@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 import { products } from '../mockData';
-import { Product } from './types/productTypes';
+import { Product } from '../types/productTypes';
 
 type AllProductsPageProps = {
 	searchText: string;

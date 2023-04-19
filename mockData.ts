@@ -1,4 +1,4 @@
-import { Brand, Product } from './components/types/productTypes';
+import { Brand, Product } from './types/productTypes';
 
 export const products: Product[] = [
 	{
