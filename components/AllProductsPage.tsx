@@ -1,13 +1,20 @@
-import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Image, Animated, Dimensions } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, View, Text, Image, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { products } from '../mockData';
+import { StackParamList } from '../types/navigationTypes';
 import { Product } from '../types/productTypes';
+import Toolbar from './Toolbar';
+
+type AllProductsPageNavigationProp = StackNavigationProp<StackParamList, 'AllProducts'>;
 
 type AllProductsPageProps = {
-	searchText: string;
+	navigation: AllProductsPageNavigationProp;
 };
 
-const AllProductsPage: React.FC<AllProductsPageProps> = ({ searchText }) => {
+const AllProductsPage: React.FC<AllProductsPageProps> = ({ navigation }) => {
+	const [searchText, setSearchText] = useState('');
+
 	const numColumns = 2;
 	const itemMargin = 8;
 	const itemWidth = (Dimensions.get('window').width - (numColumns + 1) * itemMargin) / numColumns;
@@ -27,23 +34,30 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ searchText }) => {
 		}).start();
 	}, [filteredProducts, fadeAnim]);
 
+	const handleProductPress = (productId: number) => {
+		navigation.navigate('ProductDetail', { productId });
+	};
+
 	const renderItem = ({ item }: { item: Product }) => (
-		<View style={[styles.itemContainer, { width: itemWidth }]}>
+		<TouchableOpacity style={[styles.itemContainer, { width: itemWidth }]} onPress={() => handleProductPress(item.id)}>
 			<Image style={styles.image} source={{ uri: item.image }} />
 			<Text style={styles.itemName}>{item.name}</Text>
 			<Text style={styles.itemPrice}>${item.price}</Text>
-		</View>
+		</TouchableOpacity>
 	);
 
 	return (
-		<Animated.FlatList
-			data={filteredProducts} // Use the filtered product list
-			renderItem={renderItem}
-			keyExtractor={(item) => item.id.toString()}
-			numColumns={numColumns}
-			contentContainerStyle={styles.listContainer}
-			style={{ opacity: fadeAnim }} // Bind opacity to animated value
-		/>
+		<>
+			<Toolbar onSearch={setSearchText} />
+			<Animated.FlatList
+				data={filteredProducts}
+				renderItem={renderItem}
+				keyExtractor={(item) => item.id.toString()}
+				numColumns={numColumns}
+				contentContainerStyle={styles.listContainer}
+				style={{ opacity: fadeAnim }}
+			/>
+		</>
 	);
 };
 
