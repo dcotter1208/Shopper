@@ -16,9 +16,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ onSearch }) => {
 
 const styles = StyleSheet.create({
 	container: {
-		paddingTop: 8,
-		paddingLeft: 8,
-		paddingRight: 8,
 		borderBottomWidth: 1,
 		borderBottomColor: '#ccc',
 	},

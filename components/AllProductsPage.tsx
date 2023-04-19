@@ -66,11 +66,13 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		paddingHorizontal: 16,
+		backgroundColor: 'white',
 	},
 	itemContainer: {
 		backgroundColor: 'white',
 		borderRadius: 8,
 		padding: 16,
+		marginBottom: 8,
 	},
 	image: {
 		width: '100%',

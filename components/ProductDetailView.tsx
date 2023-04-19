@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image, FlatList, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, Image, FlatList, ScrollView, TouchableOpacity } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { products } from '../mockData';
 import { StackParamList } from '../types/navigationTypes';
@@ -9,24 +9,36 @@ type ProductDetailViewProps = {
 };
 
 const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route }) => {
+	const [selectedSize, setSelectedSize] = useState<number | null>(null);
+
 	const { productId } = route.params;
 	const product = products.find((product) => product.id === productId);
 
-	const renderItem = ({ item }: { item: number }) => (
-		<View style={styles.sizeCircle}>
-			<Text style={styles.sizeText}>{item}</Text>
-		</View>
-	);
+	const onSizePress = (size: number) => {
+		setSelectedSize(size);
+	};
+
+	const renderItem = ({ item }: { item: number }) => {
+		const selectedStyle = item === selectedSize ? { backgroundColor: 'yellow' } : {};
+
+		return (
+			<TouchableOpacity style={[styles.sizeCircle, selectedStyle]} onPress={() => onSizePress(item)}>
+				<Text style={styles.sizeText}>{item}</Text>
+			</TouchableOpacity>
+		);
+	};
 
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			{product && (
-				<>
-					<Image style={styles.productImage} source={{ uri: product.image }} />
-					<Text style={styles.brand}>{product.brand}</Text>
-					<Text style={styles.productName}>{product.name}</Text>
-					<Text style={styles.price}>${product.price.toFixed(2)}</Text>
-					<Text style={styles.sectionTitle}>Select Size</Text>
+				<View style={styles.innerContainer}>
+					<View style={styles.productInfoContainer}>
+						<Image style={styles.productImage} source={{ uri: product.image }} />
+						<Text style={styles.brand}>{product.brand}</Text>
+						<Text style={styles.productName}>{product.name}</Text>
+						<Text style={styles.price}>${product.price.toFixed(2)}</Text>
+						<Text style={styles.sectionTitle}>Select Size</Text>
+					</View>
 					<FlatList
 						data={product.availableSizes}
 						renderItem={renderItem}
@@ -35,9 +47,11 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route }) => {
 						showsHorizontalScrollIndicator={false}
 						contentContainerStyle={styles.sizeSelector}
 					/>
-					<Text style={styles.sectionTitle}>Description</Text>
-					<Text style={styles.description}>{product.description}</Text>
-				</>
+					<View style={styles.productInfoContainer}>
+						<Text style={styles.sectionTitle}>Description</Text>
+						<Text style={styles.description}>{product.description}</Text>
+					</View>
+				</View>
 			)}
 		</ScrollView>
 	);
@@ -45,7 +59,17 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route }) => {
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 16,
+		backgroundColor: 'white',
+		height: '100%',
+		paddingBottom: 16,
+	},
+	innerContainer: {
+		paddingTop: 16,
+		paddingBottom: 16,
+	},
+	productInfoContainer: {
+		paddingLeft: 16,
+		paddingRight: 16,
 	},
 	productImage: {
 		width: '100%',
@@ -73,12 +97,15 @@ const styles = StyleSheet.create({
 	},
 	sizeSelector: {
 		marginTop: 8,
+		paddingLeft: 16,
 	},
 	sizeCircle: {
 		width: 40,
 		height: 40,
 		borderRadius: 20,
-		backgroundColor: '#f0f0f0',
+		backgroundColor: 'white',
+		borderColor: 'grey',
+		borderWidth: 0.5,
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginRight: 8,

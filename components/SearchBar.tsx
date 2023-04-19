@@ -18,10 +18,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 8,
+		padding: 16,
 		display: 'flex',
 		flexDirection: 'row',
 		alignItems: 'center',
+		backgroundColor: 'white',
 	},
 	searchIcon: {
 		marginRight: 8,
