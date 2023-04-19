@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Image, FlatList, Animated } from 'react-native';
+import { StyleSheet, View, Text, Image, Animated, Dimensions } from 'react-native';
 import { products } from '../mockData';
 import { Product } from '../types/productTypes';
 
@@ -8,6 +8,9 @@ type AllProductsPageProps = {
 };
 
 const AllProductsPage: React.FC<AllProductsPageProps> = ({ searchText }) => {
+	const numColumns = 2;
+	const itemMargin = 8;
+	const itemWidth = (Dimensions.get('window').width - (numColumns + 1) * itemMargin) / numColumns;
 	const fadeAnim = useRef(new Animated.Value(0)).current;
 
 	const filteredProducts = products.filter(
@@ -25,7 +28,7 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ searchText }) => {
 	}, [filteredProducts, fadeAnim]);
 
 	const renderItem = ({ item }: { item: Product }) => (
-		<View style={styles.itemContainer}>
+		<View style={[styles.itemContainer, { width: itemWidth }]}>
 			<Image style={styles.image} source={{ uri: item.image }} />
 			<Text style={styles.itemName}>{item.name}</Text>
 			<Text style={styles.itemPrice}>${item.price}</Text>
@@ -37,7 +40,7 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ searchText }) => {
 			data={filteredProducts} // Use the filtered product list
 			renderItem={renderItem}
 			keyExtractor={(item) => item.id.toString()}
-			numColumns={2}
+			numColumns={numColumns}
 			contentContainerStyle={styles.listContainer}
 			style={{ opacity: fadeAnim }} // Bind opacity to animated value
 		/>
@@ -46,11 +49,11 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ searchText }) => {
 
 const styles = StyleSheet.create({
 	listContainer: {
-		padding: 8,
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		paddingHorizontal: 16,
 	},
 	itemContainer: {
-		flex: 1,
-		margin: 8,
 		backgroundColor: 'white',
 		borderRadius: 8,
 		padding: 16,

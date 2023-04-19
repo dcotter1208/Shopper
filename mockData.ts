@@ -190,11 +190,4 @@ export const products: Product[] = [
 		price: 230,
 		brand: Brand.Nike,
 	},
-	{
-		id: 28,
-		name: 'Adidas Supa Boost 700',
-		image: 'https://via.placeholder.com/150',
-		price: 250,
-		brand: Brand.Adidas,
-	},
 ];
