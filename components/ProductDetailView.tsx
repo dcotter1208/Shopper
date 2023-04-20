@@ -5,7 +5,6 @@ import { RouteProp } from '@react-navigation/native';
 import { products } from '../mockData';
 import { StackParamList } from '../types/navigationTypes';
 import { useCart } from '../state/CartContext';
-import Toolbar from './Toolbar';
 
 type ProductDetailViewNavigationProp = StackNavigationProp<StackParamList, 'ProductDetailView'>;
 
@@ -65,13 +64,6 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route, navigation
 						style={[styles.addToCartButton, addToCartDisabledStyle]}
 						onPress={() => addToCart({ product: product, size: selectedSize! })}>
 						<Text style={styles.cartButtonText}>Add To Cart</Text>
-					</TouchableOpacity>
-					<TouchableOpacity
-						style={styles.addToCartButton}
-						onPress={() => {
-							navigation.navigate('Cart');
-						}}>
-						<Text style={styles.cartButtonText}>Shopping Cart</Text>
 					</TouchableOpacity>
 				</View>
 			)}

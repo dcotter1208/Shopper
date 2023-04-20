@@ -10,7 +10,7 @@ type SearchBarProps = {
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 	return (
 		<View style={styles.container}>
-			<Icon name='search' size={20} color='#888' style={styles.searchIcon} />
+			<Icon name='search' size={20} color='#006340' style={styles.searchIcon} />
 			<TextInput style={styles.searchBar} placeholder='Search by name or brand...' onChangeText={onSearch} />
 		</View>
 	);
