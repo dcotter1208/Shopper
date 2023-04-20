@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import SearchBar from './SearchBar';
 
@@ -17,7 +17,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ onSearch }) => {
 const styles = StyleSheet.create({
 	container: {
 		borderBottomWidth: 1,
-		borderBottomColor: '#ccc',
+		borderBottomColor: '#006340',
+		backgroundColor: 'white',
 	},
 });
 

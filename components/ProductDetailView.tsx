@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, ScrollView, TouchableOpacity } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { products } from '../mockData';
 import { StackParamList } from '../types/navigationTypes';
+import { useCart } from '../state/CartContext';
+
+type ProductDetailViewNavigationProp = StackNavigationProp<StackParamList, 'ProductDetailView'>;
 
 type ProductDetailViewProps = {
 	route: RouteProp<StackParamList, 'ProductDetail'>;
+	navigation: ProductDetailViewNavigationProp;
 };
 
-const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route }) => {
+const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route, navigation }) => {
 	const [selectedSize, setSelectedSize] = useState<number | null>(null);
+	const { addToCart } = useCart();
+	const addToCartDisabledStyle = selectedSize != null ? {} : { opacity: 0.5 };
 
 	const { productId } = route.params;
 	const product = products.find((product) => product.id === productId);
@@ -53,10 +60,9 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route }) => {
 						<Text style={styles.description}>{product.description}</Text>
 					</View>
 					<TouchableOpacity
-						style={styles.addToCartButton}
-						onPress={() => {
-							console.log('Adding to cart...');
-						}}>
+						disabled={selectedSize === null}
+						style={[styles.addToCartButton, addToCartDisabledStyle]}
+						onPress={() => addToCart({ product: product, size: selectedSize! })}>
 						<Text style={styles.cartButtonText}>Add To Cart</Text>
 					</TouchableOpacity>
 				</View>
