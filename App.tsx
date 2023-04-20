@@ -1,17 +1,15 @@
 // App.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
-import AllProductsPage from './components/AllProductsPage';
-import SearchBar from './components/SearchBar';
-import Toolbar from './components/Toolbar';
+import { NavigationContainer } from '@react-navigation/native'; // Import the NavigationContainer
+import AppNavigator from './components/AppNavigator'; // Import the AppNavigator component
 
 export default function App() {
-	const [searchText, setSearchText] = useState('');
-
 	return (
 		<SafeAreaView style={styles.container}>
-			<Toolbar onSearch={setSearchText} />
-			<AllProductsPage searchText={searchText} />
+			<NavigationContainer>
+				<AppNavigator />
+			</NavigationContainer>
 		</SafeAreaView>
 	);
 }
@@ -19,5 +17,6 @@ export default function App() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		backgroundColor: 'white',
 	},
 });

@@ -4,6 +4,8 @@ export type Product = {
 	image: string;
 	price: number;
 	brand: Brand;
+	availableSizes: number[];
+	description: string;
 };
 
 export enum Brand {
