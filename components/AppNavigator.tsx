@@ -4,15 +4,32 @@ import AllProductsPage from './AllProductsPage';
 import ProductDetailView from './ProductDetailView';
 import { StackParamList } from '../types/navigationTypes';
 import Cart from './Cart';
+import CartButtonWithBadge from './CartButtonWithBadge';
 
 const Stack = createStackNavigator<StackParamList>();
 
 const AppNavigator = () => {
 	return (
-		<Stack.Navigator initialRouteName='AllProducts' screenOptions={{ headerBackTitle: 'Back' }}>
-			<Stack.Screen name='AllProducts' component={AllProductsPage} options={{ headerShown: false }} />
-			<Stack.Screen name='ProductDetail' component={ProductDetailView} />
-			<Stack.Screen name='Cart' component={Cart} />
+		<Stack.Navigator
+			initialRouteName='AllProducts'
+			screenOptions={({ navigation }) => ({
+				headerBackTitle: 'Back',
+				headerRight: () => <CartButtonWithBadge navigation={navigation} />,
+			})}>
+			<Stack.Screen
+				name='AllProducts'
+				component={AllProductsPage}
+				options={{
+					headerShown: true,
+					headerTitle: '',
+					headerStyle: {
+						borderBottomWidth: 0,
+						shadowOpacity: 0,
+					},
+				}}
+			/>
+			<Stack.Screen name='ProductDetail' component={ProductDetailView} options={{ headerTitle: '' }} />
+			<Stack.Screen name='Cart' component={Cart} options={{ headerTitle: '' }} />
 		</Stack.Navigator>
 	);
 };

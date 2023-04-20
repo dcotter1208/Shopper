@@ -38,47 +38,44 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route, navigation
 	};
 
 	return (
-		<>
-			<Toolbar showSearchBar={false} />
-			<ScrollView contentContainerStyle={styles.container}>
-				{product && (
-					<View style={styles.innerContainer}>
-						<View style={styles.productInfoContainer}>
-							<Image style={styles.productImage} source={{ uri: product.image }} />
-							<Text style={styles.productName}>{product.name}</Text>
-							<Text style={styles.brand}>{product.brand}</Text>
-							<Text style={styles.price}>${product.price.toFixed(2)}</Text>
-							<Text style={styles.sectionTitle}>Select Size</Text>
-						</View>
-						<FlatList
-							data={product.availableSizes}
-							renderItem={renderItem}
-							keyExtractor={(item) => item.toString()}
-							horizontal
-							showsHorizontalScrollIndicator={false}
-							contentContainerStyle={styles.sizeSelector}
-						/>
-						<View style={styles.productInfoContainer}>
-							<Text style={styles.sectionTitle}>Description</Text>
-							<Text style={styles.description}>{product.description}</Text>
-						</View>
-						<TouchableOpacity
-							disabled={selectedSize === null}
-							style={[styles.addToCartButton, addToCartDisabledStyle]}
-							onPress={() => addToCart({ product: product, size: selectedSize! })}>
-							<Text style={styles.cartButtonText}>Add To Cart</Text>
-						</TouchableOpacity>
-						<TouchableOpacity
-							style={styles.addToCartButton}
-							onPress={() => {
-								navigation.navigate('Cart');
-							}}>
-							<Text style={styles.cartButtonText}>Shopping Cart</Text>
-						</TouchableOpacity>
+		<ScrollView contentContainerStyle={styles.container}>
+			{product && (
+				<View style={styles.innerContainer}>
+					<View style={styles.productInfoContainer}>
+						<Image style={styles.productImage} source={{ uri: product.image }} />
+						<Text style={styles.productName}>{product.name}</Text>
+						<Text style={styles.brand}>{product.brand}</Text>
+						<Text style={styles.price}>${product.price.toFixed(2)}</Text>
+						<Text style={styles.sectionTitle}>Select Size</Text>
 					</View>
-				)}
-			</ScrollView>
-		</>
+					<FlatList
+						data={product.availableSizes}
+						renderItem={renderItem}
+						keyExtractor={(item) => item.toString()}
+						horizontal
+						showsHorizontalScrollIndicator={false}
+						contentContainerStyle={styles.sizeSelector}
+					/>
+					<View style={styles.productInfoContainer}>
+						<Text style={styles.sectionTitle}>Description</Text>
+						<Text style={styles.description}>{product.description}</Text>
+					</View>
+					<TouchableOpacity
+						disabled={selectedSize === null}
+						style={[styles.addToCartButton, addToCartDisabledStyle]}
+						onPress={() => addToCart({ product: product, size: selectedSize! })}>
+						<Text style={styles.cartButtonText}>Add To Cart</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.addToCartButton}
+						onPress={() => {
+							navigation.navigate('Cart');
+						}}>
+						<Text style={styles.cartButtonText}>Shopping Cart</Text>
+					</TouchableOpacity>
+				</View>
+			)}
+		</ScrollView>
 	);
 };
 
