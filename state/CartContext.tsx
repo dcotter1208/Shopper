@@ -10,6 +10,7 @@ type CartItem = {
 type CartContextValue = {
 	cartItems: CartItem[];
 	addToCart: (item: CartItem) => void;
+	removeFromCart: (itemId: number) => void;
 };
 
 // CartContext with an initial value of undefined
@@ -27,7 +28,11 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 		setCartItems((prevItems) => [...prevItems, item]);
 	};
 
-	return <CartContext.Provider value={{ cartItems, addToCart }}>{children}</CartContext.Provider>;
+	const removeFromCart = (itemId: number) => {
+		setCartItems((prevItems) => prevItems.filter((prevItem) => prevItem.product.id !== itemId));
+	};
+
+	return <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>{children}</CartContext.Provider>;
 };
 
 // useCart custom hook
