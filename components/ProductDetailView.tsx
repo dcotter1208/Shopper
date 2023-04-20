@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList, ScrollView, TouchableOpacity } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { products } from '../mockData';
 import { StackParamList } from '../types/navigationTypes';
+import { useCart } from '../state/CartContext';
+import Toolbar from './Toolbar';
+
+type ProductDetailViewNavigationProp = StackNavigationProp<StackParamList, 'ProductDetailView'>;
 
 type ProductDetailViewProps = {
 	route: RouteProp<StackParamList, 'ProductDetail'>;
+	navigation: ProductDetailViewNavigationProp;
 };
 
-const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route }) => {
+const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route, navigation }) => {
 	const [selectedSize, setSelectedSize] = useState<number | null>(null);
+	const { addToCart } = useCart();
+	const addToCartDisabledStyle = selectedSize != null ? {} : { opacity: 0.5 };
 
 	const { productId } = route.params;
 	const product = products.find((product) => product.id === productId);
@@ -30,38 +38,47 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route }) => {
 	};
 
 	return (
-		<ScrollView contentContainerStyle={styles.container}>
-			{product && (
-				<View style={styles.innerContainer}>
-					<View style={styles.productInfoContainer}>
-						<Image style={styles.productImage} source={{ uri: product.image }} />
-						<Text style={styles.productName}>{product.name}</Text>
-						<Text style={styles.brand}>{product.brand}</Text>
-						<Text style={styles.price}>${product.price.toFixed(2)}</Text>
-						<Text style={styles.sectionTitle}>Select Size</Text>
+		<>
+			<Toolbar showSearchBar={false} />
+			<ScrollView contentContainerStyle={styles.container}>
+				{product && (
+					<View style={styles.innerContainer}>
+						<View style={styles.productInfoContainer}>
+							<Image style={styles.productImage} source={{ uri: product.image }} />
+							<Text style={styles.productName}>{product.name}</Text>
+							<Text style={styles.brand}>{product.brand}</Text>
+							<Text style={styles.price}>${product.price.toFixed(2)}</Text>
+							<Text style={styles.sectionTitle}>Select Size</Text>
+						</View>
+						<FlatList
+							data={product.availableSizes}
+							renderItem={renderItem}
+							keyExtractor={(item) => item.toString()}
+							horizontal
+							showsHorizontalScrollIndicator={false}
+							contentContainerStyle={styles.sizeSelector}
+						/>
+						<View style={styles.productInfoContainer}>
+							<Text style={styles.sectionTitle}>Description</Text>
+							<Text style={styles.description}>{product.description}</Text>
+						</View>
+						<TouchableOpacity
+							disabled={selectedSize === null}
+							style={[styles.addToCartButton, addToCartDisabledStyle]}
+							onPress={() => addToCart({ product: product, size: selectedSize! })}>
+							<Text style={styles.cartButtonText}>Add To Cart</Text>
+						</TouchableOpacity>
+						<TouchableOpacity
+							style={styles.addToCartButton}
+							onPress={() => {
+								navigation.navigate('Cart');
+							}}>
+							<Text style={styles.cartButtonText}>Shopping Cart</Text>
+						</TouchableOpacity>
 					</View>
-					<FlatList
-						data={product.availableSizes}
-						renderItem={renderItem}
-						keyExtractor={(item) => item.toString()}
-						horizontal
-						showsHorizontalScrollIndicator={false}
-						contentContainerStyle={styles.sizeSelector}
-					/>
-					<View style={styles.productInfoContainer}>
-						<Text style={styles.sectionTitle}>Description</Text>
-						<Text style={styles.description}>{product.description}</Text>
-					</View>
-					<TouchableOpacity
-						style={styles.addToCartButton}
-						onPress={() => {
-							console.log('Adding to cart...');
-						}}>
-						<Text style={styles.cartButtonText}>Add To Cart</Text>
-					</TouchableOpacity>
-				</View>
-			)}
-		</ScrollView>
+				)}
+			</ScrollView>
+		</>
 	);
 };
 

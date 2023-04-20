@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
 	searchBar: {
 		height: 40,
 		width: '100%',
-		border: 'none',
 		paddingHorizontal: 8,
 	},
 });

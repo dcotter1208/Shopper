@@ -48,7 +48,7 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ navigation }) => {
 
 	return (
 		<>
-			<Toolbar onSearch={setSearchText} />
+			<Toolbar onSearch={setSearchText} showSearchBar={true} />
 			<Animated.FlatList
 				data={filteredProducts}
 				renderItem={renderItem}
