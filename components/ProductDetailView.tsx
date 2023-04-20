@@ -19,11 +19,12 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route }) => {
 	};
 
 	const renderItem = ({ item }: { item: number }) => {
-		const selectedStyle = item === selectedSize ? { backgroundColor: 'yellow' } : {};
+		const selectedCircleStyle = item === selectedSize ? { backgroundColor: '#006340', borderColor: 'white' } : {};
+		const selectedCircleTextStyle = item === selectedSize ? { color: 'white' } : {};
 
 		return (
-			<TouchableOpacity style={[styles.sizeCircle, selectedStyle]} onPress={() => onSizePress(item)}>
-				<Text style={styles.sizeText}>{item}</Text>
+			<TouchableOpacity style={[styles.sizeCircle, selectedCircleStyle]} onPress={() => onSizePress(item)}>
+				<Text style={[styles.sizeText, selectedCircleTextStyle]}>{item}</Text>
 			</TouchableOpacity>
 		);
 	};
@@ -34,8 +35,8 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route }) => {
 				<View style={styles.innerContainer}>
 					<View style={styles.productInfoContainer}>
 						<Image style={styles.productImage} source={{ uri: product.image }} />
-						<Text style={styles.brand}>{product.brand}</Text>
 						<Text style={styles.productName}>{product.name}</Text>
+						<Text style={styles.brand}>{product.brand}</Text>
 						<Text style={styles.price}>${product.price.toFixed(2)}</Text>
 						<Text style={styles.sectionTitle}>Select Size</Text>
 					</View>
@@ -51,6 +52,13 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route }) => {
 						<Text style={styles.sectionTitle}>Description</Text>
 						<Text style={styles.description}>{product.description}</Text>
 					</View>
+					<TouchableOpacity
+						style={styles.addToCartButton}
+						onPress={() => {
+							console.log('Adding to cart...');
+						}}>
+						<Text style={styles.cartButtonText}>Add To Cart</Text>
+					</TouchableOpacity>
 				</View>
 			)}
 		</ScrollView>
@@ -60,7 +68,7 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route }) => {
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: 'white',
-		height: '100%',
+		minHeight: '100%',
 		paddingBottom: 16,
 	},
 	innerContainer: {
@@ -77,21 +85,23 @@ const styles = StyleSheet.create({
 		resizeMode: 'contain',
 	},
 	brand: {
-		fontSize: 18,
-		fontWeight: 'bold',
-		marginTop: 16,
-	},
-	productName: {
-		fontSize: 16,
-		marginTop: 8,
-	},
-	price: {
-		fontSize: 16,
+		fontSize: 14,
 		color: 'grey',
 		marginTop: 8,
 	},
-	sectionTitle: {
+	productName: {
 		fontSize: 16,
+		fontWeight: 'bold',
+		marginTop: 16,
+	},
+	price: {
+		fontSize: 16,
+		fontWeight: 'bold',
+		marginTop: 8,
+		color: '#006340',
+	},
+	sectionTitle: {
+		fontSize: 14,
 		fontWeight: 'bold',
 		marginTop: 16,
 	},
@@ -111,12 +121,28 @@ const styles = StyleSheet.create({
 		marginRight: 8,
 	},
 	sizeText: {
-		fontSize: 16,
+		fontSize: 14,
 		fontWeight: 'bold',
 	},
 	description: {
 		fontSize: 14,
 		marginTop: 8,
+	},
+	addToCartButton: {
+		backgroundColor: '#006340',
+		marginTop: 16,
+
+		height: 40,
+		justifyContent: 'center',
+		alignItems: 'center',
+		margin: 16,
+
+		borderRadius: 8,
+	},
+	cartButtonText: {
+		color: 'white',
+		fontWeight: 'bold',
+		fontSize: 16,
 	},
 });
 
