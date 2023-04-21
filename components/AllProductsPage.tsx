@@ -55,7 +55,7 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ navigation }) => {
 				keyExtractor={(item) => item.id.toString()}
 				numColumns={numColumns}
 				contentContainerStyle={styles.listContainer}
-				style={{ opacity: fadeAnim }}
+				style={[styles.productList, { opacity: fadeAnim }]}
 			/>
 		</>
 	);
@@ -63,9 +63,10 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
 	listContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
 		paddingHorizontal: 16,
+		backgroundColor: 'white',
+	},
+	productList: {
 		backgroundColor: 'white',
 	},
 	itemContainer: {
