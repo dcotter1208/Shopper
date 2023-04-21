@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { products } from '../mockData';
 import { StackParamList } from '../types/navigationTypes';
+import { Product } from '../types/productTypes';
 import { useCart } from '../state/CartContext';
 
 type ProductDetailViewNavigationProp = StackNavigationProp<StackParamList, 'ProductDetailView'>;
@@ -36,6 +37,11 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route, navigation
 		);
 	};
 
+	const handleAddToCartPress = (product: Product, size: number) => {
+		addToCart({ product: product, size: size });
+		setSelectedSize(null);
+	};
+
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			{product && (
@@ -62,8 +68,11 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ route, navigation
 					<TouchableOpacity
 						disabled={selectedSize === null}
 						style={[styles.addToCartButton, addToCartDisabledStyle]}
-						onPress={() => addToCart({ product: product, size: selectedSize! })}>
-						<Text style={styles.cartButtonText}>Add To Cart</Text>
+						onPress={() => handleAddToCartPress(product, selectedSize!)}>
+						<Text style={styles.buttonText}>Add To Cart</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.keepShoppingButton} onPress={() => navigation.goBack()}>
+						<Text style={styles.buttonText}>Keep Shopping</Text>
 					</TouchableOpacity>
 				</View>
 			)}
@@ -136,16 +145,23 @@ const styles = StyleSheet.create({
 	},
 	addToCartButton: {
 		backgroundColor: '#006340',
-		marginTop: 16,
-
 		height: 40,
 		justifyContent: 'center',
 		alignItems: 'center',
 		margin: 16,
-
 		borderRadius: 8,
 	},
-	cartButtonText: {
+	keepShoppingButton: {
+		backgroundColor: '#006340',
+		height: 40,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginLeft: 16,
+		marginRight: 16,
+		marginTop: 8,
+		borderRadius: 8,
+	},
+	buttonText: {
 		color: 'white',
 		fontWeight: 'bold',
 		fontSize: 16,
