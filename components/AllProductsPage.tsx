@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Image, Animated, Dimensions, TouchableOpacity } from 'react-native';
 import { StyleSheet, Animated, Dimensions } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { products } from '../mockData';
@@ -41,7 +40,6 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ navigation }) => {
 	};
 
 	const renderItem = ({ item }: { item: Product }) => (
-		<TouchableOpacity style={[styles.itemContainer, { width: itemWidth }]} onPress={() => handleProductPress(item.id)}>
 		<ProductItem item={item} itemWidth={itemWidth} onPress={() => handleProductPress(item.id)} />
 	);
 
