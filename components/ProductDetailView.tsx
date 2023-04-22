@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		aspectRatio: 1,
 		resizeMode: 'contain',
+		borderRadius: 15,
 	},
 	brand: {
 		fontSize: 14,
