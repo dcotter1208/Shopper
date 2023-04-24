@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Image, Animated, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Animated, Dimensions } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { products } from '../mockData';
 import { StackParamList } from '../types/navigationTypes';
 import { Product } from '../types/productTypes';
 import Toolbar from './Toolbar';
+import ProductItem from './ProductItem';
 
 type AllProductsPageNavigationProp = StackNavigationProp<StackParamList, 'AllProducts'>;
 
@@ -39,11 +40,7 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ navigation }) => {
 	};
 
 	const renderItem = ({ item }: { item: Product }) => (
-		<TouchableOpacity style={[styles.itemContainer, { width: itemWidth }]} onPress={() => handleProductPress(item.id)}>
-			<Image style={styles.image} source={{ uri: item.image }} />
-			<Text style={styles.itemName}>{item.name}</Text>
-			<Text style={styles.itemPrice}>${item.price}</Text>
-		</TouchableOpacity>
+		<ProductItem item={item} itemWidth={itemWidth} onPress={() => handleProductPress(item.id)} />
 	);
 
 	return (
@@ -55,7 +52,7 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ navigation }) => {
 				keyExtractor={(item) => item.id.toString()}
 				numColumns={numColumns}
 				contentContainerStyle={styles.listContainer}
-				style={{ opacity: fadeAnim }}
+				style={[styles.productList, { opacity: fadeAnim }]}
 			/>
 		</>
 	);
@@ -63,31 +60,11 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
 	listContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
 		paddingHorizontal: 16,
 		backgroundColor: 'white',
 	},
-	itemContainer: {
+	productList: {
 		backgroundColor: 'white',
-		borderRadius: 8,
-		padding: 16,
-		marginBottom: 8,
-	},
-	image: {
-		width: '100%',
-		height: 150,
-		resizeMode: 'contain',
-	},
-	itemName: {
-		fontSize: 14,
-		marginTop: 8,
-	},
-	itemPrice: {
-		fontSize: 16,
-		fontWeight: '600',
-		marginTop: 8,
-		color: '#006340',
 	},
 });
 

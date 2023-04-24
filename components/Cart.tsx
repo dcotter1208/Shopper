@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
 		width: 100,
 		height: 100,
 		marginRight: 16,
+		borderRadius: 15,
 	},
 	itemName: {
 		fontSize: 18,
